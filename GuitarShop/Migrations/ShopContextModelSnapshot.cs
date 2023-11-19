@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-#nullable disable
-
 namespace GuitarShop.Migrations
 {
     [DbContext(typeof(ShopContext))]
@@ -16,22 +14,18 @@ namespace GuitarShop.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+                .HasAnnotation("ProductVersion", "3.0.0-preview3.19153.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("GuitarShop.Models.Category", b =>
                 {
                     b.Property<int>("CategoryID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryID"));
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired();
 
                     b.HasKey("CategoryID");
 
@@ -59,20 +53,15 @@ namespace GuitarShop.Migrations
                 {
                     b.Property<int>("ProductID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"));
-
-                    b.Property<int>("CategoryID")
-                        .HasColumnType("int");
+                    b.Property<int>("CategoryID");
 
                     b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired();
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired();
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -171,10 +160,7 @@ namespace GuitarShop.Migrations
                     b.HasOne("GuitarShop.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

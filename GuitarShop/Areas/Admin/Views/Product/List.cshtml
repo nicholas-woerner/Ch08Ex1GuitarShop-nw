@@ -1,4 +1,4 @@
-﻿@model ProductListViewModel
+﻿@model List<Product>
 @{
     ViewBag.Title = "Product Manager";
 }
@@ -9,14 +9,14 @@
         <ul class="list-group">
             <a asp-action="List" asp-route-id="All"
                class="list-group-item
-                @(Model.CheckActiveCategory("All") ? "active" : "")">
-                All
-                </a>
-            @foreach (Category c in Model.Categories)
+                @if (ViewBag.SelectedCategoryName == "All") {
+                    <text>active</text>
+                } ">All</a>
+            @foreach (Category c in ViewBag.Categories)
             {
                 <a asp-action="List" asp-route-id="@c.Name"
                    class="list-group-item
-                         @(Model.CheckActiveCategory(c.Name) ? "active" : "")">
+                         @(ViewBag.SelectedCategoryName == c.Name ? "active" : "")">
                     @c.Name
                 </a>
             }
@@ -33,7 +33,7 @@
                     <th></th>
             </thead>
             <tbody>
-                @foreach (var p in Model.Products)
+                @foreach (var p in Model)
                 {
                     <tr>
                         <td>@p.Name</td>
@@ -50,15 +50,6 @@
                 }
             </tbody>
         </table>
-
-        @{
-            string userMessage = TempData?["UserMessage"]?.ToString() ?? "";
-        }
-        @if (userMessage != "")
-        {
-            <div class="text-success">@userMessage</div>
-        }
-
         <a asp-action="Add" class="btn btn-primary">Add New Product</a>
     </div>
 </div>
