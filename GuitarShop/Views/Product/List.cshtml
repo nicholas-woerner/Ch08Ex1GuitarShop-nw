@@ -1,23 +1,29 @@
-﻿@model List<Product>
+﻿@model ProductListViewModel
 @{
     ViewBag.Title = "Product List";
 }
+
+@functions {
+    // Helper method to check if a category is active
+    bool CheckActiveCategory(string categoryName) => Model.CheckActiveCategory(categoryName);
+}
+
 
 <h1>Product List</h1>
 <div class="row">
     <div class="col-sm-2">
             <a asp-controller="Product" asp-action="List" asp-route-id="All" 
                 class="list-group-item 
-                @(ViewBag.SelectedCategoryName == "All" ? "active" : "")">
+                @(CheckActiveCategory("All") ? "active" : "")">
                 All
             </a>
 
-            @foreach (Category c in ViewBag.Categories)
+            @foreach (Category c in Model.Categories)
             {
 
                     <a asp-controller="Product" asp-action="List" asp-route-id="@c.Name" 
                        class="list-group-item
-                             @(ViewBag.SelectedCategoryName == c.Name ? "active" : "")">
+                             @(CheckActiveCategory(c.Name) ? "active" : "")">
                         @c.Name
                     </a>
 
@@ -34,7 +40,7 @@
                     <th></th>
             </thead>
             <tbody>
-                @foreach (var product in Model)
+                @foreach (var product in Model.Products)
                 {
                     <tr>
                         <td>@product.Name</td>
